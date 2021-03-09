@@ -1,0 +1,41 @@
+5 lesson - infra-1
+
+Steps:
+
+1) Connect to remote hots "instance-1' with Agent Forwarding RSA-key:
+ssh -A user1@<IP_Address1> ssh user2@<IP_Address2>
+
+2) Connect to remote host "instance-1" via host "bastion" with "-J" (jump host command):
+ssh -J bastion instance
+
+Create file 'config' in directory ~/.ssh/ and add to: 
+
+Host bastion
+     User user1
+     HostName <ip-address1>
+     Port 22
+     IdentityFile ~/.ssh/id_rsa
+
+Host instance
+     User user2
+     HostName <ip-address2>
+     Port 22
+     IdentityFile ~/.ssh/id_rsa
+     
+3) Connect to remote host "instance-1" using aliases in 'config' file ~/.ssh/ and ProxyCommand:
+ssh instance
+
+Create file 'config' in directory ~/.ssh/ and add to: 
+
+Host bastion
+     User user1
+     HostName <ip-address1>
+     Port 22
+     IdentityFile ~/.ssh/id_rsa
+
+Host instance
+     User user1
+     HostName <ip-address2>
+     Port 22
+     IdentityFile ~/.ssh/id_rsa
+     ProxyCommand ssh -q -W %h:%p bastion

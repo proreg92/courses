@@ -1,0 +1,42 @@
+1) Подключение к Instance-1 c помощью агента форвардинга:
+ssh -A <Username>@<IP_Address> ssh <Username>@<IP_Address>
+
+2) Подключение к удаленному хосту Instance через хост Bastion:
+ssh -J bastion instance
+
+Создаем файл config d /.ssh/ и пишем туда 
+
+Host bastion
+     User <Username>
+     HostName <IP_Address>
+     Port 22
+     IdentityFile ~/.ssh/id_rsa
+
+Host instance
+     User <Username>
+     HostName <IP_Address>
+     Port 22
+     IdentityFile ~/.ssh/id_rsa
+     
+3) Подключение к удаленному хосту Instance используя алиасы и ProxyCommand:
+ssh instance
+
+Создаем файл config d /.ssh/ и пишем туда 
+
+Host bastion
+     User <Username>
+     HostName <IP_Address>
+     Port 22
+     IdentityFile ~/.ssh/id_rsa
+
+Host instance
+     User <Username>
+     HostName <IP_Address>
+     Port 22
+     IdentityFile ~/.ssh/id_rsa
+     ProxyCommand ssh -q -W %h:%p bastion
+
+
+
+
+	
